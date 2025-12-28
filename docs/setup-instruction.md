@@ -453,9 +453,3 @@ pip install -e .
 ```
 
 ---
-
-## Contact
-
-For questions or issues:
-- Pranav Sahasrabudhe - pranav.sahasrabudhe@abbvie.com
-- Jing Wang - wang.jing@abbvie.com
