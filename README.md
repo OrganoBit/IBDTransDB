@@ -16,7 +16,44 @@ Transcriptomic data have been widely used to understand the pathogenesis of infl
   </p></h3>
 
 ## Run locally
+
 IBDTransDB runs in Shinyapps.io server that takes around 1 miniute to initialize each app for the first time access. To avoid any waiting time, users can also download the codes from Github and IBDTransDB database from <a href="https://www.icloud.com/iclouddrive/013D9ewhOhNjj-5tErDEWnhow#IBDTransDB" target="_blank">https://www.icloud.com/iclouddrive/013D9ewhOhNjj-5tErDEWnhow#IBDTransDB</a> and run RShiny locally. This will make analyses much faster. After downloading the codes and database, users should put the database into each module folder and run RShiny in the RStudio.
+
+See [Setup Instructions](docs/setup-instruction.md) for detailed R setup guide.
+
+## Python CLI Tool
+
+For users who want to explore the database without the full R visualization interface, we provide a lightweight Python CLI tool.
+
+### Quick Start
+
+```bash
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Download database to data/ directory
+# From: https://www.icloud.com/iclouddrive/013D9ewhOhNjj-5tErDEWnhow#IBDTransDB
+cp ~/Downloads/IBDTransDB.db data/
+
+# Setup Python environment
+uv venv
+source .venv/bin/activate
+uv pip install -e .
+
+# Explore the database
+ibdtransdb inspect stats
+ibdtransdb datasets list
+ibdtransdb datasets list --disease UC --tissue Colon
+```
+
+### Features
+
+- **Dataset Browser**: Filter and explore 34 curated datasets by disease, tissue, treatment
+- **Database Inspector**: View table schemas, run custom SQL queries
+- **Multiple Output Formats**: Table, CSV, JSON for easy data export
+- **Lightweight**: No R dependencies, fast startup, scriptable
+
+See [Python CLI Documentation](docs/setup-instruction.md#python-cli-tool) for complete usage guide.
 
 ## Contract
 Pranav Sahasrabudhe - pranav.sahasrabudhe@abbvie.com</br>
