@@ -16,16 +16,189 @@ IBDTransDB is a manually curated transcriptomic database for inflammatory bowel 
 
 ### 1. R Installation
 
-Ensure you have R installed on your system (version 4.0.0 or higher recommended).
+Ensure you have R installed on your system (version 4.0.0 or higher recommended, version 4.4.2 latest as of January 2025).
 
-- Download R from [CRAN](https://cran.r-project.org/)
-- Verify installation by running `R --version` in your terminal
+#### macOS
+
+**Option 1: Download and Install (Recommended)**
+```bash
+# Download R for macOS (Apple Silicon - M1/M2/M3)
+curl -O https://cloud.r-project.org/bin/macosx/big-sur-arm64/base/R-4.4.2-arm64.pkg
+
+# Or for Intel Macs
+curl -O https://cloud.r-project.org/bin/macosx/big-sur-x86_64/base/R-4.4.2-x86_64.pkg
+
+# Install the downloaded package
+sudo installer -pkg R-4.4.2-arm64.pkg -target /
+# or for Intel:
+# sudo installer -pkg R-4.4.2-x86_64.pkg -target /
+```
+
+**Option 2: Using Homebrew**
+```bash
+# Install Homebrew if not already installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install R
+brew install r
+```
+
+#### Linux (Ubuntu/Debian)
+
+```bash
+# Update package list
+sudo apt-get update
+
+# Install dependencies
+sudo apt-get install -y software-properties-common dirmngr
+
+# Add CRAN repository for latest R version
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+
+# Add R 4.4 repository (for Ubuntu 22.04 - Jammy)
+sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+
+# Update and install R
+sudo apt-get update
+sudo apt-get install -y r-base r-base-dev
+
+# Install additional build tools for R packages
+sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev
+```
+
+#### Linux (CentOS/RHEL/Fedora)
+
+```bash
+# For RHEL/CentOS 8+
+sudo dnf install epel-release
+sudo dnf install R
+
+# For Fedora
+sudo dnf install R
+
+# Install development tools
+sudo dnf install libcurl-devel openssl-devel libxml2-devel
+```
+
+#### Windows
+
+**Option 1: Direct Download**
+```powershell
+# Download R installer for Windows
+curl -O https://cloud.r-project.org/bin/windows/base/R-4.4.2-win.exe
+
+# Run the installer (open the downloaded file)
+# Or use PowerShell to install silently:
+Start-Process -FilePath "R-4.4.2-win.exe" -ArgumentList "/VERYSILENT" -Wait
+```
+
+**Option 2: Using Chocolatey** (Windows package manager)
+```powershell
+# Install Chocolatey if not already installed
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+# Install R
+choco install r.project
+```
+
+#### Verify R Installation
+
+After installation, verify R is correctly installed:
+
+```bash
+# Check R version
+R --version
+
+# Should output something like:
+# R version 4.4.2 (2024-10-31) -- "Pile of Leaves"
+
+# Open R interactive console
+R
+
+# In R console, check installation:
+# > version
+# > q()  # to quit
+```
 
 ### 2. RStudio (Recommended)
 
 While not strictly required, RStudio provides the best development experience for RShiny apps.
 
-- Download RStudio from [posit.co](https://posit.co/download/rstudio-desktop/)
+#### Download RStudio Desktop
+
+**Direct Download Links:**
+
+- **macOS (M1/M2/M3 - Apple Silicon):**
+  ```bash
+  curl -L -o RStudio.dmg https://download1.rstudio.org/electron/macos/RStudio-2024.12.0-467.dmg
+  open RStudio.dmg
+  # Drag RStudio to Applications folder
+  ```
+
+- **macOS (Intel):**
+  ```bash
+  curl -L -o RStudio.dmg https://download1.rstudio.org/electron/macos/RStudio-2024.12.0-467.dmg
+  open RStudio.dmg
+  ```
+
+- **Ubuntu/Debian:**
+  ```bash
+  # Download RStudio for Ubuntu 22
+  wget https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.12.0-467-amd64.deb
+
+  # Install
+  sudo dpkg -i rstudio-2024.12.0-467-amd64.deb
+
+  # Fix any dependency issues
+  sudo apt-get install -f
+  ```
+
+- **Windows:**
+  ```powershell
+  # Download RStudio
+  curl -L -o RStudio-Setup.exe https://download1.rstudio.org/electron/windows/RStudio-2024.12.0-467.exe
+
+  # Run installer
+  Start-Process -FilePath "RStudio-Setup.exe" -Wait
+  ```
+
+**Alternative:** Visit [posit.co/download/rstudio-desktop](https://posit.co/download/rstudio-desktop/) for the latest version.
+
+#### Verify RStudio Installation
+
+```bash
+# macOS/Linux: Launch RStudio
+open -a RStudio  # macOS
+rstudio &        # Linux
+
+# Windows: Search for "RStudio" in Start menu
+```
+
+### 3. Additional System Dependencies (Linux)
+
+For Linux users, install additional system libraries required for R packages:
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install -y \
+  libgit2-dev \
+  libcairo2-dev \
+  libxt-dev \
+  libpng-dev \
+  libjpeg-dev \
+  libtiff-dev
+
+# CentOS/RHEL
+sudo dnf install -y \
+  libgit2-devel \
+  cairo-devel \
+  libXt-devel \
+  libpng-devel \
+  libjpeg-devel \
+  libtiff-devel
+```
 
 ## Installation Steps
 
@@ -64,59 +237,39 @@ The IBDTransDB database file (`IBDTransDB.db`) must be downloaded separately and
 
 ### Step 3: Install Required R Packages
 
-Open R or RStudio and install the required packages. You can install all dependencies at once by running:
+**Automated Installation (Recommended)**
+
+Run the installation script to automatically install all required packages:
+
+```bash
+# From the IBDTransDB root directory
+./scripts/install_R_packages.sh
+```
+
+This script will:
+- Check if R is installed
+- Install all required packages for both CLI and RShiny apps
+- Verify critical packages are working
+- Provide a detailed installation summary
+
+**Manual Installation (Alternative)**
+
+If you prefer to install packages manually, open R or RStudio and run:
 
 ```r
-# List of required packages
-packages <- c(
-  # Core Shiny packages
-  "shiny",
-  "shinyWidgets",
-  "shinyBS",
-  "shinybusy",
-  "shinyalert",
-  "shinydashboard",
-  "shinydashboardPlus",
-  "shinyjs",
-  "rintrojs",
+# Navigate to the scripts directory and run
+setwd("scripts/r_analysis")
+source("install_packages.R")
+```
 
-  # Database
-  "RSQLite",
-  "DBI",
+Or install specific packages individually:
 
-  # Data manipulation
-  "dplyr",
-  "tidyr",
-  "stringr",
+```r
+# Core packages for CLI
+install.packages(c("RSQLite", "DBI", "dplyr", "ggplot2", "jsonlite"))
 
-  # Visualization
-  "ggplot2",
-  "RColorBrewer",
-  "gridExtra",
-
-  # Table display
-  "DT",
-  "reactable",
-  "kableExtra",
-
-  # Statistical analysis
-  "poolr",
-  "stats",
-
-  # Web scraping
-  "rvest",
-
-  # Other utilities
-  "parallel",
-  "rstudioapi"
-)
-
-# Install packages that are not already installed
-new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
-if(length(new_packages)) install.packages(new_packages)
-
-# Load all packages to verify installation
-lapply(packages, library, character.only = TRUE)
+# Additional packages for RShiny apps
+install.packages(c("shiny", "shinyWidgets", "shinydashboard", "DT"))
 ```
 
 ## Running the Applications

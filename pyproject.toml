@@ -1,7 +1,7 @@
 [project]
 name = "ibdtransdb-cli"
-version = "0.1.0"
-description = "CLI tool to explore IBDTransDB database"
+version = "0.2.0"
+description = "CLI tool to explore IBDTransDB database with comprehensive analysis features (PCA, DGE, enrichment, meta-analysis)"
 requires-python = ">=3.9"
 dependencies = [
     "typer>=0.12.0",
